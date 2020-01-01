@@ -1,0 +1,30 @@
+name: Website
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    name: Build Website
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Build
+      run: |
+        npm ci
+        npm run build --if-present
+        cp -r dist examples
+      env:
+        CI: true
+    - name: Deploy
+      if: success()
+      uses: crazy-max/ghaction-github-pages@v1
+      with:
+        target_branch: gh-pages
+        build_dir: examples
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
