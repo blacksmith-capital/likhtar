@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Simple OHLC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/a11y-light.min.css" integrity="sha256-tJFLL8gFycTbUxiIYM6yLqldxB2YFdzB4viha8cVRsE=" crossorigin="anonymous" />
+  </head>
+  <body>
+    <h1>Likhtar - Indicator</h1>
+    <p>Use custom adapter to retirieve OHLC data</p>
+    <h2>Demo</h2>
+    <div id="app">
+      <app />
+    </div>
+    <h2>Code</h2>
+    <pre><code class="js" id="code">
+      let Vue = Likhtar.vue;
+      Vue.config.productionTip = false;
+      Vue.component(Likhtar.app.name, Likhtar.app);
+
+      let adapter = function() {
+        return {
+          getData: function (venue,symbol,_from,_to,granularity) {
+            let interval = null;
+            switch (granularity) {
+              case "1m": interval = Likhtar.d3.timeMinute; break;
+              case "5m": interval = Likhtar.d3.timeMinute.every(5); break;
+              case "15m": interval = Likhtar.d3.timeMinute.every(15); break;
+              case "1h": interval = Likhtar.d3.timeHour; break;
+              case "1d": interval = Likhtar.d3.timeDay; break;
+              default: interval = Likhtar.d3.timeMinute; break;
+            }
+            let generator = Likhtar.fc
+            .randomFinancial()
+            .startPrice(8000)
+            .interval(interval);
+            return { data: generator(40), id: [venue, symbol].join("-") }
+          }
+        }
+      }
+
+      const mydeltaFunction = function(datum){
+        // This increments closing price by a fixed amaount
+
+        const data_a = datum[0].data;
+        const data_b = datum[1].data;
+
+        const data = data_a.reduce( (acc, a) => {
+          let b = data_b.find( bb => Likhtar.moment(bb.date).millisecond(0).isSame(Likhtar.moment(a.date).millisecond(0)) );
+          if (!!b) {
+            let value = (a.close - b.close) / b.close * 100;
+            acc.push({value: value, date: a.date})
+          }
+          return acc;
+        }, []);
+        console.log("data", data)
+        return { data: data };
+      };
+
+      const horizontalLine = function(lineValue = 0) {
+        return function(datum) {
+          let dates = datum.map(aa => aa.data.map(a => a.date)).flat();
+          let data = Likhtar.lodash.uniqBy(dates, d => Likhtar.moment(d).toString())
+            .map(d => { return { date: d, value: lineValue } });
+          return { data: data };
+        }
+      }
+
+      new Vue({
+        el: '#app',
+        data: {
+          symbols: 'BITMEX:XBTUSD,BINANCE:BTC_USDT',
+          granularity: '1m',
+          adapter: adapter(),
+          series: [
+            { id: "BITMEX-XBTUSD", type: "line", styles: { stroke: "red", "stroke-width": 0.5 }},
+            { id: "BINANCE-BTC_USDT"}
+          ],
+          indicators: [
+            { id: "delta", indicatorFunction: mydeltaFunction, axis: { name: 'delta', side: 'left' }, styles: { stroke: "blue", "stroke-width": 0.5 } },
+            { id: "zero", indicatorFunction: horizontalLine(0), axis: { name: 'delta' }, styles: { "stroke-width": 0.5 } }
+          ]
+        }
+      });
+    </code></pre>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/javascript.min.js" integrity="sha256-35wv0wLGhc2OmNCDmKhrCkaUL/LcWkaiNdD+FdRv8Vc=" crossorigin="anonymous"></script>
+    <script src="../dist/manifest.js"></script>
+    <script src="../dist/vendor.js"></script>
+    <script src="../dist/global.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+      eval(document.getElementById("code").innerText);
+    </script>
+  </body>
+</html>
