@@ -13,7 +13,7 @@
     "url": "git+ssh://git@github.com/yurikoval/likhtar.git"
   },
   "author": "Yuri Koval'ov <contact@yurikoval.com> (https://www.yurikoval.com/)",
-  "license": "QPL-1.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/yurikoval/likhtar/issues"
   },
