@@ -1,6 +1,6 @@
 # Likhtar - Lantern
 
-[![Build Status](https://github.com/yurikoval/likhtar/workflows/Test/badge.svg)](https://github.com/yurikoval/likhtar/actions?query=workflow%3ATest)
+[![Build Status](https://github.com/blacksmith-capital/likhtar/workflows/Test/badge.svg)](https://github.com/blacksmith-capital/likhtar/actions?query=workflow%3ATest)
 
 # Examples
 

@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/yurikoval/likhtar.git"
+    "url": "git+ssh://git@github.com/blacksmith-capital/likhtar.git"
   },
   "author": "Yuri Koval'ov <contact@yurikoval.com> (https://www.yurikoval.com/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/yurikoval/likhtar/issues"
+    "url": "https://github.com/blacksmith-capital/likhtar/issues"
   },
-  "homepage": "https://github.com/yurikoval/likhtar",
+  "homepage": "https://blacksmith-capital.github.io/likhtar/",
   "keywords": [
     "d3",
     "financial",
