@@ -1,6 +1,6 @@
 {
   "name": "likhtar",
-  "private": true,
+  "private": false,
   "version": "0.0.1",
   "description": "Charting library for financial data",
   "main": "src/index.js",
