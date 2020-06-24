@@ -11,6 +11,7 @@ on:
 jobs:
   test:
     name: Node ${{ matrix.node-version }} Test
+    timeout-minutes: 5
     runs-on: ubuntu-latest
 
     strategy:
