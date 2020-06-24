@@ -8,6 +8,9 @@ mix.js('src/index.js', 'dist/')
   .setPublicPath('dist')
   .extract(Object.keys(require('./package.json').dependencies))
   .webpackConfig({
+    node: {
+      fs: "empty"
+    },
     resolve: {
       extensions: ['.vue', '.js'],
       alias: {
