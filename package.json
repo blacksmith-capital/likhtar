@@ -25,7 +25,7 @@
     "charts"
   ],
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.0",
     "d3": "^5.14.2",
     "d3fc": "^15.0.1",
     "deep-equal": "^2.0.1",
